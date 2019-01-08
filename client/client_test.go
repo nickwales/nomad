@@ -653,7 +653,6 @@ func TestClient_Init(t *testing.T) {
 }
 
 func TestClient_BlockedAllocations(t *testing.T) {
-	t.Skip("missing mock driver plugin implementation")
 	t.Parallel()
 	s1, _ := testServer(t, nil)
 	defer s1.Shutdown()

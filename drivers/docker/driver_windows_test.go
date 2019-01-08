@@ -1,36 +1,24 @@
+// +build windows
+
 package docker
 
 import (
-	"context"
-	"fmt"
-	"io/ioutil"
-	"math/rand"
-	"path/filepath"
-	"reflect"
-	"runtime"
-	"sort"
-	"strconv"
 	"strings"
 	"testing"
 	"time"
 
-	docker "github.com/fsouza/go-dockerclient"
 	"github.com/hashicorp/consul/lib/freeport"
-	"github.com/hashicorp/nomad/client/allocdir"
-	"github.com/hashicorp/nomad/client/taskenv"
 	"github.com/hashicorp/nomad/client/testutil"
 	"github.com/hashicorp/nomad/helper/uuid"
 	"github.com/hashicorp/nomad/nomad/structs"
 	"github.com/hashicorp/nomad/plugins/drivers"
-	dtestutil "github.com/hashicorp/nomad/plugins/drivers/testutils"
 	tu "github.com/hashicorp/nomad/testutil"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 var (
 	// busyboxImageID is the image that should be ran
-	busyboxImageID = "stefanscherer/busybox-windows:1709"
+	busyboxImageID = "dantoml/busybox-windows:08012019"
 )
 
 // Returns a task with a reserved and dynamic port. The ports are returned
@@ -84,7 +72,7 @@ func TestDockerDriver_Entrypoint(t *testing.T) {
 		t.Skip("Docker not connected")
 	}
 
-	entrypoint := []string{"/bin/sh", "-c"}
+	entrypoint := []string{"cmd.exe", "/s", "/c"}
 	task, cfg, _ := dockerTask(t)
 	cfg.Entrypoint = entrypoint
 	cfg.Command = strings.Join(busyboxLongRunningCmd, " ")
@@ -100,6 +88,6 @@ func TestDockerDriver_Entrypoint(t *testing.T) {
 	container, err := client.InspectContainer(handle.containerID)
 	require.NoError(t, err)
 
-	require.Len(t, container.Config.Entrypoint, 2, "Expected one entrypoint")
+	require.Len(t, container.Config.Entrypoint, 3, "Expected one entrypoint")
 	require.Equal(t, entrypoint, container.Config.Entrypoint, "Incorrect entrypoint ")
 }

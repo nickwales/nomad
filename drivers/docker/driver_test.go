@@ -54,7 +54,7 @@ func dockerIsRemote(t *testing.T) bool {
 var (
 	// busyboxLongRunningCmd is a busybox command that runs indefinitely, and
 	// ideally responds to SIGINT/SIGTERM.  Sadly, busybox:1.29.3 /bin/sleep doesn't.
-	busyboxLongRunningCmd = []string{"/bin/nc", "-l", "-p", "3000", "127.0.0.1"}
+	busyboxLongRunningCmd = []string{"nc", "-l", "-p", "3000", "127.0.0.1"}
 )
 
 // dockerSetup does all of the basic setup you need to get a running docker
@@ -73,7 +73,6 @@ func dockerSetup(t *testing.T, task *drivers.TaskConfig) (*docker.Client, *dtest
 	driver := dockerDriverHarness(t, nil)
 	cleanup := driver.MkAllocDir(task, true)
 
-	copyImage(t, task.TaskDir(), "busybox.tar")
 	_, _, err := driver.StartTask(task)
 	require.NoError(t, err)
 

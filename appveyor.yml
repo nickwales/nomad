@@ -8,8 +8,6 @@ environment:
   GOBIN: c:\gopath\bin
 
   matrix:
-    - RUN_UI_TESTS: 1
-      SKIP_NOMAD_TESTS: 1
     - {}
 
 install:
@@ -22,6 +20,7 @@ install:
   - ps: Expand-Archive C:\gopath\bin\vault.zip -DestinationPath C:\gopath\bin
   - ps: appveyor DownloadFile "https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_windows_amd64.zip" -FileName "C:\\gopath\\bin\\consul.zip"
   - ps: Expand-Archive C:\gopath\bin\consul.zip -DestinationPath C:\gopath\bin
+  - ps: choco install make
   - ps: make deps
 test_script:
   - cmd: GOTESTSUM_JUNITFILE=$HOME/results.xml make test

@@ -14,9 +14,9 @@ install:
   - cmd: go version
   - cmd: go env
   - ps: mkdir C:\gopath\bin
-  - ps: appveyor DownloadFile "https://releases.hashicorp.com/vault/0.7.0/vault_0.7.0_windows_amd64.zip" -FileName "C:\\gopath\\bin\\vault.zip"
+  - ps: appveyor DownloadFile "https://releases.hashicorp.com/vault/0.10.2/vault_0.10.2_windows_amd64.zip" -FileName "C:\\gopath\\bin\\vault.zip"
   - ps: Expand-Archive C:\gopath\bin\vault.zip -DestinationPath C:\gopath\bin
-  - ps: appveyor DownloadFile "https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_windows_amd64.zip" -FileName "C:\\gopath\\bin\\consul.zip"
+  - ps: appveyor DownloadFile "https://releases.hashicorp.com/consul/1.0.0/consul_1.0.0_windows_amd64.zip" -FileName "C:\\gopath\\bin\\consul.zip"
   - ps: Expand-Archive C:\gopath\bin\consul.zip -DestinationPath C:\gopath\bin
   - ps: choco install make
   - ps: |
@@ -34,4 +34,4 @@ test_script:
 on_finish:
   - ps: |
       $wc = New-Object 'System.Net.WebClient'
-      $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$env:APPVEYOR_JOB_ID", (Resolve-Path "c:\\results.xml"))
+      $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path "c:\\results.xml"))

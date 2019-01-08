@@ -6,9 +6,7 @@ build: off
 environment:
   GOPATH: c:\gopath
   GOBIN: c:\gopath\bin
-
-  matrix:
-    - {}
+  GOTESTSUM_JUNITFILE: c:\results.xml
 
 install:
   - cmd: set PATH=%GOBIN%;c:\go\bin;%PATH%
@@ -23,8 +21,8 @@ install:
   - ps: choco install make
   - ps: make deps
 test_script:
-  - cmd: GOTESTSUM_JUNITFILE=$HOME/results.xml make test
+  - cmd: gotestsum -f short-verbose
 on_finish:
   - ps: |
       $wc = New-Object 'System.Net.WebClient'
-      $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$env:APPVEYOR_JOB_ID", (Resolve-Path "$env:HOME\\results.xml"))
+      $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$env:APPVEYOR_JOB_ID", (Resolve-Path "c:\\results.xml"))

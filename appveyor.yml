@@ -1,7 +1,7 @@
 version: "build-{branch}-{build}"
 image: Visual Studio 2017
+
 clone_folder: c:\gopath\src\github.com\hashicorp\nomad
-build: off
 
 environment:
   GOPATH: c:\gopath
@@ -28,7 +28,10 @@ install:
       go get -u github.com/magiconair/vendorfmt/cmd/vendorfmt
       go get -u github.com/golang/protobuf/protoc-gen-go
       go get -u gotest.tools/gotestsum
-
+build_script:
+  - cmd: |
+      mkdir -p $GOPATH\bin
+      go build -o $GOPATH\bin\nomad
 test_script:
   - cmd: gotestsum -f short-verbose
 on_finish:

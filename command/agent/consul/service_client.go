@@ -1324,7 +1324,7 @@ func (c *ServiceClient) serviceRegs(
 	// one of the Connect gateway types.
 	kind := api.ServiceKindTypical
 	switch {
-	case service.Name == "api-gateway":
+	case service.Kind == "api-gateway":
 		kind = "api-gateway"
 	case service.Connect.IsIngress():
 		kind = api.ServiceKindIngressGateway
